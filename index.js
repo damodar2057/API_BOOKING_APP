@@ -3,15 +3,19 @@ import mongoose from "mongoose"
 import dotenv from "dotenv";
 dotenv.config();
 import hotelsRoute from "./routes/hotels.js";
+import authRoute from "./routes/auth.js";
+import userRoute from "./routes/users.js";
+import cookieParser from "cookie-parser"
 
 const app=express();
 
 //middlewares
+app.use(cookieParser()); 
 app.use(express.json());
 app.use("/api/hotels",hotelsRoute);
-// app.use("/api/auth",authRoute);
+app.use("/api/auth",authRoute);
 // app.use("/api/rooms",roomsRoute);
-// app.use("/api/users",usersRoute);
+app.use("/api/users",userRoute);
 app.use((err,req,res,next)=>{
     const errorStatus=err.status || 500;
     const errorMessage = err.message || "Something went wrong !!"
@@ -23,7 +27,7 @@ app.use((err,req,res,next)=>{
     })
 })
 
-//Connection to the database
+//Connection to the database  
 const connect=async ()=>{
     try{
         console.log("hello")
